@@ -1,0 +1,15 @@
+[spider]
+# 高德地图poi：http://lbs.amap.com/api/webservice/guide/api/search/#text
+# 请替换为自己申请的key值：申请Web服务API类型KEY http://lbs.amap.com/dev/
+key=567d62e98c70897ab839902b9c531659
+# 090000医疗，参考AMap_API_Table/高德地图API POI分类对照表.xlsx
+types=090100;090200;090300;090400;090500;090600;090700
+# 每页记录数据，强烈建议不超过25，若超过25可能造成访问报错
+page_size=20
+
+[file]
+json_name=data_amap.json
+# Excel表头
+hkeys=id;行业类型;医院名称;医院大类;医院次类;医院小类;医院地址;联系电话;经度;纬度;省份代码;省份名称;城市代码;城市名称;区域代码;区域名称;所在商圈
+# 获取数据列
+bkeys=id;biz_type;name;type;address;tel;location;pcode;pname;citycode;cityname;adcode;adname;business_area
