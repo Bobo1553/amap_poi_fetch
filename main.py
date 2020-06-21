@@ -13,12 +13,13 @@ def main():
     city_code_item = CityCode()
     city_codes = city_code_item.fetch_city_code_for_spider()
     for city_code in city_codes:
+        connect_char = ''
         AmapSpider.write_json_before()
-        amap_spider = AmapSpider(CONF.key, CONF.types[0], city_code, '')
-        hospital_count = amap_spider.get_poi_data()
-        city_code_item.write_finish_city_code(city_code, CONF.types[0], hospital_count)
-        for spider_type in CONF.types[1:]:
-            amap_spider = AmapSpider(CONF.key, spider_type, city_code, ',')
+        hospital_count = 0
+        for spider_type in CONF.types:
+            if hospital_count != 0:
+                connect_char = ','
+            amap_spider = AmapSpider(CONF.key, spider_type, city_code, connect_char)
             hospital_count = amap_spider.get_poi_data()
             city_code_item.write_finish_city_code(city_code, spider_type, hospital_count)
         AmapSpider.write_json_after()
