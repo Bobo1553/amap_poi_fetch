@@ -8,6 +8,7 @@ class CONF:
     key = None
     types = None
     page_size = None
+    count_threshold = None
     json_name = None
     hkeys = None
     bkeys = None
@@ -19,6 +20,7 @@ class CONF:
         CONF.key = conf['spider']['key']
         CONF.types = [spider_type for spider_type in conf['spider']['types'].split(';')]
         CONF.page_size = int(conf['spider']['page_size'])
+        CONF.count_threshold = int(conf['spider']['count_threshold'])
 
         CONF.json_name = conf['file']['json_name']
         CONF.hkeys = [hkey for hkey in conf['file']['hkeys'].split(';')]
@@ -31,6 +33,7 @@ if __name__ == '__main__':
     print(CONF.key)
     print(CONF.types)
     print(CONF.page_size)
+    print(CONF.count_threshold)
     print(CONF.json_name)
     print(CONF.hkeys)
     print(CONF.bkeys)

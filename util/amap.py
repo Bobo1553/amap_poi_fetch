@@ -16,18 +16,25 @@ class AmapSpider(object):
     city_code = None
     types = None
     connect_char = None
+    spider_count = 0
 
     def __init__(self, key, types, city_code, connect_char):
         self.url_amap = 'http://restapi.amap.com/v3/place/text?key={0}&types={1}&city={2}&citylimit=true&children=1&' \
                         'offset=20&page=pageindex&extensions=all'.format(key, types, city_code)
         self.city_code = city_code
-        self.types= types
+        self.types = types
         self.connect_char = connect_char
+
 
     def get_data(self, page_index):
         # 暂停500毫秒，防止过快取不到数据
         time.sleep(0.5)
+        print('今日爬取次数为{0}次'.format(AmapSpider.spider_count))
+        if AmapSpider.spider_count >= CONF.count_threshold:
+            exit(0)
+        AmapSpider.spider_count += 1
         url = self.url_amap.replace('pageindex', str(page_index))
+        print(url)
         # 中文编码
         url = quote(url, safe='/:?&=')
         with request.urlopen(url) as f:

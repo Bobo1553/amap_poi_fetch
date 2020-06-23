@@ -6,6 +6,8 @@ key=*
 types=090100;090200;090300;090400;090500;090600;090700
 # 每页记录数据，强烈建议不超过25，若超过25可能造成访问报错
 page_size=20
+# 单日上限，血泪的教训
+count_threshold=2000
 
 [file]
 json_name=data_amap.json
