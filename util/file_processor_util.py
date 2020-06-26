@@ -1,9 +1,9 @@
 # coding=utf-8
 # auther=Xiao Yijia
-
 import csv
 import os
 
+import pandas as pd
 import xlrd
 
 from config import CONF
@@ -20,6 +20,7 @@ class FileProcessorUtil(object):
             infile_suffix = os.path.splitext(file_name)[1]
             if infile_suffix == '.xls':
                 datas = FileProcessorUtil.fetch_excel_data(file_name)
+                datas = FileProcessorUtil.data_deduplication(datas, ['经度', '纬度', '医院小类'])
             else:
                 datas = []
             outfile_suffix = os.path.splitext(outfile_name)[1]
@@ -56,6 +57,13 @@ class FileProcessorUtil(object):
                 file_writer.writerow(head)
             for data in datas:
                 file_writer.writerow(data)
+
+    @classmethod
+    def data_deduplication(cls, datas, by_index):
+        pd_datas = pd.DataFrame(datas, columns=CONF.hkeys)
+        data_deduplication_data = pd_datas.groupby(by=by_index).first()
+        data_deduplication_data.reset_index(inplace=True)
+        return data_deduplication_data[CONF.hkeys].values
 
 
 if __name__ == '__main__':
