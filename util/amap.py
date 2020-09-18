@@ -1,5 +1,6 @@
-# 高德地图：http://ditu.amap.com/  高德地图poi：http://lbs.amap.com/api/webservice/guide/api/search/#text
 # coding:utf-8
+# 高德地图：http://ditu.amap.com/  高德地图poi：http://lbs.amap.com/api/webservice/guide/api/search/#text
+
 
 import json
 import xlwt
@@ -8,7 +9,8 @@ from urllib import request
 from urllib.parse import quote
 
 import time
-from config import CONF
+
+from config.config import CONF
 
 
 class AmapSpider(object):
@@ -18,13 +20,17 @@ class AmapSpider(object):
     connect_char = None
     spider_count = 0
 
-    def __init__(self, key, types, city_code, connect_char):
-        self.url_amap = 'http://restapi.amap.com/v3/place/text?key={0}&types={1}&city={2}&citylimit=true&children=1&' \
-                        'offset=20&page=pageindex&extensions=all'.format(key, types, city_code)
+    def __init__(self, key, types, city_code, connect_char, polygon_or_text='text'):
+        if polygon_or_text == 'text':
+            self.url_amap = 'http://restapi.amap.com/v3/place/text?key={0}&types={1}&city={2}&citylimit=true&children=1&' \
+                            'offset=20&page=pageindex&extensions=all'.format(key, types, city_code)
+        else:
+            self.url_amap = 'https://restapi.amap.com/v3/place/polygon?polygon={0},{1}|{2},{3}&key={4}&types={5}&' \
+                            'children=1&offset=20&page=pageindex&extensions=all' \
+                .format(city_code[0], city_code[1], city_code[2], city_code[3], key, types)
         self.city_code = city_code
         self.types = types
         self.connect_char = connect_char
-
 
     def get_data(self, page_index):
         # 暂停500毫秒，防止过快取不到数据
